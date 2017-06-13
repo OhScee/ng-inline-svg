@@ -78,6 +78,13 @@ export class InlineSVGDirective implements OnInit, OnChanges, OnDestroy {
     if (!this._isBrowser) { return; }
 
     if (changes['inlineSVG']) {
+      // work around
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=370763
+      let el = document.getElementById(this.unique);
+      if (el) {
+        el.remove();
+      }
+
       this._insertSVG();
     }
   }
@@ -102,6 +109,7 @@ export class InlineSVGDirective implements OnInit, OnChanges, OnDestroy {
       const elSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       const elSvgUse = document.createElementNS('http://www.w3.org/2000/svg', 'use');
       elSvgUse.setAttributeNS('http://www.w3.org/1999/xlink', 'href', this.inlineSVG);
+      elSvg.setAttribute('id', this.unique);
       elSvg.appendChild(elSvgUse);
 
       this._insertEl(elSvg);
