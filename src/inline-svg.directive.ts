@@ -82,7 +82,9 @@ export class InlineSVGDirective implements OnInit, OnChanges, OnDestroy {
       // https://bugzilla.mozilla.org/show_bug.cgi?id=370763
       let el = document.getElementById(this.unique);
       if (el) {
+        console.log('el remove??', el);
         el.remove();
+        console.log(el);
       }
 
       this._insertSVG();
@@ -125,6 +127,7 @@ export class InlineSVGDirective implements OnInit, OnChanges, OnDestroy {
       this._subscription = this._svgCache.getSVG(this.inlineSVG, this.cacheSVG)
         .subscribe(
           (svg: SVGElement) => {
+            console.log(svg, 'AT SUBSCRIPT');
             if (!svg) { return; }
 
             // Insert SVG
@@ -154,6 +157,7 @@ export class InlineSVGDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   private _insertEl(el: Element) {
+    console.log('insert el');
     if (this.injectComponent) {
       if (!this._svgComp) {
         const factory = this._resolver.resolveComponentFactory(InlineSVGComponent);
